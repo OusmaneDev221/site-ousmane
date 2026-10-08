@@ -1,0 +1,519 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Ousmane Thiam - Étudiant passionné par l'e-commerce, le digital et l'entrepreneuriat.">
+
+    <title>Ousmane Thiam | E-commerce & Digital</title>
+
+    <style>
+        /* =========================
+           RESET
+        ========================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 20px;
+            background:
+                linear-gradient(
+                    rgba(255, 255, 255, 0.95),
+                    rgba(239, 246, 255, 0.95)
+                );
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: #475569;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 28px;
+            background: #2563eb;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           SECTIONS
+        ========================== */
+
+        section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #64748b;
+        }
+
+        /* =========================
+           SERVICES
+        ========================== */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+        }
+
+        .card-icon {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .card p {
+            color: #64748b;
+        }
+
+        /* =========================
+           ABOUT
+        ========================== */
+
+        .about {
+            background: white;
+            border-radius: 15px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        .about p {
+            max-width: 750px;
+            margin: auto;
+            color: #475569;
+            font-size: 17px;
+        }
+
+        /* =========================
+           CONTACT
+        ========================== */
+
+        .contact-box {
+            background: #0f172a;
+            color: white;
+            padding: 50px 25px;
+            text-align: center;
+            border-radius: 15px;
+        }
+
+        .contact-box h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .contact-box p {
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+
+        .email {
+            display: inline-block;
+            margin-top: 15px;
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            background: #020617;
+            color: #94a3b8;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 768px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 18px 20px;
+            }
+
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .hero {
+                min-height: 75vh;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .about {
+                padding: 30px 20px;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            .btn {
+                padding: 12px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header>
+
+        <div class="logo">
+            Ousmane <span>Thiam</span>
+        </div>
+
+        <nav>
+            <a href="#accueil">Accueil</a>
+            <a href="#services">Services</a>
+            <a href="#apropos">À propos</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         ACCUEIL
+    ========================== -->
+
+    <main>
+
+        <section class="hero" id="accueil">
+
+            <div class="hero-content">
+
+                <h1>
+                    Bienvenue sur mon
+                    <span>site</span>
+                </h1>
+
+                <p>
+                    Je suis étudiant et passionné par
+                    l'e-commerce, le digital et
+                    l'entrepreneuriat.
+                </p>
+
+                <a href="#contact" class="btn">
+                    Me contacter
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SERVICES
+        ========================== -->
+
+        <section id="services">
+
+            <div class="section-title">
+
+                <h2>Mes services</h2>
+
+                <p>
+                    Découvrez les domaines dans lesquels
+                    je développe mes compétences.
+                </p>
+
+            </div>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        🛒
+                    </div>
+
+                    <h3>E-commerce</h3>
+
+                    <p>
+                        Création et développement de projets
+                        dans le domaine du commerce en ligne.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        💻
+                    </div>
+
+                    <h3>Digital</h3>
+
+                    <p>
+                        Création de présence en ligne et
+                        développement de projets numériques.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        🚀
+                    </div>
+
+                    <h3>Entrepreneuriat</h3>
+
+                    <p>
+                        Développement d'idées et de projets
+                        orientés vers le numérique.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             À PROPOS
+        ========================== -->
+
+        <section id="apropos">
+
+            <div class="section-title">
+                <h2>À propos de moi</h2>
+            </div>
+
+            <div class="about">
+
+                <p>
+                    Je suis Ousmane Thiam, étudiant passionné
+                    par l'e-commerce et les nouvelles
+                    technologies.
+
+                    <br><br>
+
+                    Mon objectif est de développer mes
+                    compétences et de créer des projets
+                    utiles dans le domaine du digital.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONTACT
+        ========================== -->
+
+        <section id="contact">
+
+            <div class="contact-box">
+
+                <h2>Contact</h2>
+
+                <p>
+                    Tu peux me contacter pour discuter
+                    d'un projet ou d'une collaboration.
+                </p>
+
+                <a
+                    href="mailto:contact@example.com"
+                    class="email"
+                >
+                    📧 contact@example.com
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <p>
+            © 2026 Ousmane Thiam -
+            Tous droits réservés.
+        </p>
+
+    </footer>
+
+</body>
+</html>
+```
