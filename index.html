@@ -1,519 +1,356 @@
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pong</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --line: rgba(255,255,255,0.25);
+      --player: #60a5fa;
+      --computer: #f97316;
+      --ball: #facc15;
+      --text: #f8fafc;
+    }
 
-    <meta name="description"
-          content="Ousmane Thiam - Étudiant passionné par l'e-commerce, le digital et l'entrepreneuriat.">
+    * {
+      box-sizing: border-box;
+    }
 
-    <title>Ousmane Thiam | E-commerce & Digital</title>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #020817, var(--bg));
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
 
-    <style>
-        /* =========================
-           RESET
-        ========================== */
+    .game-shell {
+      width: min(90vw, 860px);
+      padding: 18px 18px 14px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    h1 {
+      margin: 0 0 14px;
+      text-align: center;
+      font-size: clamp(1.8rem, 2vw, 2.4rem);
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    .scoreboard {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      font-size: clamp(1.3rem, 2vw, 2rem);
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f8fafc;
-            color: #1e293b;
-            line-height: 1.6;
-        }
+    .score-box {
+      min-width: 90px;
+      text-align: center;
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+    }
 
-        a {
-            text-decoration: none;
-        }
+    .label {
+      display: block;
+      font-size: 0.72rem;
+      opacity: 0.8;
+      margin-bottom: 6px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
-        /* =========================
-           HEADER
-        ========================== */
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #020b14;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.04);
+    }
 
-        header {
-            background: #0f172a;
-            color: white;
-            padding: 18px 8%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
-        }
+    .controls {
+      margin-top: 12px;
+      text-align: center;
+      opacity: 0.85;
+      font-size: 0.96rem;
+    }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+    button {
+      display: block;
+      margin: 18px auto 0;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
 
-        .logo span {
-            color: #3b82f6;
-        }
-
-        nav {
-            display: flex;
-            gap: 25px;
-        }
-
-        nav a {
-            color: white;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #60a5fa;
-        }
-
-        /* =========================
-           HERO
-        ========================== */
-
-        .hero {
-            min-height: 85vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 80px 20px;
-            background:
-                linear-gradient(
-                    rgba(255, 255, 255, 0.95),
-                    rgba(239, 246, 255, 0.95)
-                );
-        }
-
-        .hero-content {
-            max-width: 800px;
-        }
-
-        .hero h1 {
-            font-size: 52px;
-            margin-bottom: 20px;
-            color: #0f172a;
-        }
-
-        .hero h1 span {
-            color: #2563eb;
-        }
-
-        .hero p {
-            font-size: 19px;
-            color: #475569;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        .btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 14px 28px;
-            background: #2563eb;
-            color: white;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: 0.3s;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
-        }
-
-        .btn:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-        }
-
-        /* =========================
-           SECTIONS
-        ========================== */
-
-        section {
-            max-width: 1100px;
-            margin: auto;
-            padding: 80px 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-title h2 {
-            font-size: 34px;
-            color: #0f172a;
-            margin-bottom: 10px;
-        }
-
-        .section-title p {
-            color: #64748b;
-        }
-
-        /* =========================
-           SERVICES
-        ========================== */
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-        }
-
-        .card {
-            background: white;
-            padding: 35px 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
-        }
-
-        .card-icon {
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-
-        .card h3 {
-            font-size: 21px;
-            margin-bottom: 12px;
-            color: #0f172a;
-        }
-
-        .card p {
-            color: #64748b;
-        }
-
-        /* =========================
-           ABOUT
-        ========================== */
-
-        .about {
-            background: white;
-            border-radius: 15px;
-            padding: 45px;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-        }
-
-        .about p {
-            max-width: 750px;
-            margin: auto;
-            color: #475569;
-            font-size: 17px;
-        }
-
-        /* =========================
-           CONTACT
-        ========================== */
-
-        .contact-box {
-            background: #0f172a;
-            color: white;
-            padding: 50px 25px;
-            text-align: center;
-            border-radius: 15px;
-        }
-
-        .contact-box h2 {
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
-
-        .contact-box p {
-            color: #cbd5e1;
-            margin-bottom: 10px;
-        }
-
-        .email {
-            display: inline-block;
-            margin-top: 15px;
-            color: #60a5fa;
-            font-weight: bold;
-        }
-
-        /* =========================
-           FOOTER
-        ========================== */
-
-        footer {
-            background: #020617;
-            color: #94a3b8;
-            text-align: center;
-            padding: 25px 15px;
-        }
-
-        /* =========================
-           RESPONSIVE
-        ========================== */
-
-        @media (max-width: 768px) {
-
-            header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 18px 20px;
-            }
-
-            nav {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            nav a {
-                font-size: 14px;
-            }
-
-            .hero {
-                min-height: 75vh;
-            }
-
-            .hero h1 {
-                font-size: 38px;
-            }
-
-            .hero p {
-                font-size: 17px;
-            }
-
-            .cards {
-                grid-template-columns: 1fr;
-            }
-
-            .about {
-                padding: 30px 20px;
-            }
-
-            section {
-                padding: 60px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .section-title h2 {
-                font-size: 28px;
-            }
-
-            .btn {
-                padding: 12px 22px;
-            }
-        }
-    </style>
+    button:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
-
 <body>
-
-    <!-- =========================
-         HEADER
-    ========================== -->
-
-    <header>
-
-        <div class="logo">
-            Ousmane <span>Thiam</span>
-        </div>
-
-        <nav>
-            <a href="#accueil">Accueil</a>
-            <a href="#services">Services</a>
-            <a href="#apropos">À propos</a>
-            <a href="#contact">Contact</a>
-        </nav>
-
-    </header>
-
-
-    <!-- =========================
-         ACCUEIL
-    ========================== -->
-
-    <main>
-
-        <section class="hero" id="accueil">
-
-            <div class="hero-content">
-
-                <h1>
-                    Bienvenue sur mon
-                    <span>site</span>
-                </h1>
-
-                <p>
-                    Je suis étudiant et passionné par
-                    l'e-commerce, le digital et
-                    l'entrepreneuriat.
-                </p>
-
-                <a href="#contact" class="btn">
-                    Me contacter
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             SERVICES
-        ========================== -->
-
-        <section id="services">
-
-            <div class="section-title">
-
-                <h2>Mes services</h2>
-
-                <p>
-                    Découvrez les domaines dans lesquels
-                    je développe mes compétences.
-                </p>
-
-            </div>
-
-            <div class="cards">
-
-                <div class="card">
-
-                    <div class="card-icon">
-                        🛒
-                    </div>
-
-                    <h3>E-commerce</h3>
-
-                    <p>
-                        Création et développement de projets
-                        dans le domaine du commerce en ligne.
-                    </p>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-icon">
-                        💻
-                    </div>
-
-                    <h3>Digital</h3>
-
-                    <p>
-                        Création de présence en ligne et
-                        développement de projets numériques.
-                    </p>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-icon">
-                        🚀
-                    </div>
-
-                    <h3>Entrepreneuriat</h3>
-
-                    <p>
-                        Développement d'idées et de projets
-                        orientés vers le numérique.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             À PROPOS
-        ========================== -->
-
-        <section id="apropos">
-
-            <div class="section-title">
-                <h2>À propos de moi</h2>
-            </div>
-
-            <div class="about">
-
-                <p>
-                    Je suis Ousmane Thiam, étudiant passionné
-                    par l'e-commerce et les nouvelles
-                    technologies.
-
-                    <br><br>
-
-                    Mon objectif est de développer mes
-                    compétences et de créer des projets
-                    utiles dans le domaine du digital.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             CONTACT
-        ========================== -->
-
-        <section id="contact">
-
-            <div class="contact-box">
-
-                <h2>Contact</h2>
-
-                <p>
-                    Tu peux me contacter pour discuter
-                    d'un projet ou d'une collaboration.
-                </p>
-
-                <a
-                    href="mailto:contact@example.com"
-                    class="email"
-                >
-                    📧 contact@example.com
-                </a>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer>
-
-        <p>
-            © 2026 Ousmane Thiam -
-            Tous droits réservés.
-        </p>
-
-    </footer>
-
+  <div class="game-shell">
+    <h1>Pong</h1>
+
+    <div class="scoreboard">
+      <div class="score-box">
+        <span class="label">Joueur</span>
+        <span id="playerScore">0</span>
+      </div>
+      <div class="score-box">
+        <span class="label">Ordinateur</span>
+        <span id="computerScore">0</span>
+      </div>
+    </div>
+
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+
+    <div class="controls">
+      Contrôlez la raquette gauche avec la souris ou les flèches ↑ / ↓.
+    </div>
+
+    <button onclick="resetGame()">Recommencer</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const playerScoreEl = document.getElementById('playerScore');
+    const computerScoreEl = document.getElementById('computerScore');
+
+    const paddleWidth = 14;
+    const paddleHeight = 90;
+    const paddleSpeed = 7;
+    const ballRadius = 8;
+
+    const player = {
+      x: 20,
+      y: canvas.height / 2 - paddleHeight / 2,
+      width: paddleWidth,
+      height: paddleHeight,
+      speed: paddleSpeed
+    };
+
+    const computer = {
+      x: canvas.width - 20 - paddleWidth,
+      y: canvas.height / 2 - paddleHeight / 2,
+      width: paddleWidth,
+      height: paddleHeight,
+      speed: 5.2
+    };
+
+    const ball = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: ballRadius,
+      dx: 5,
+      dy: 4,
+      speed: 5
+    };
+
+    let playerScore = 0;
+    let computerScore = 0;
+    let animationId = null;
+
+    const keys = {};
+
+    document.addEventListener('keydown', (event) => {
+      keys[event.key] = true;
+    });
+
+    document.addEventListener('keyup', (event) => {
+      keys[event.key] = false;
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseY = event.clientY - rect.top;
+      player.y = mouseY - player.height / 2;
+      clampPlayer();
+    });
+
+    function clampPlayer() {
+      if (player.y < 0) player.y = 0;
+      if (player.y + player.height > canvas.height) {
+        player.y = canvas.height - player.height;
+      }
+    }
+
+    function resetBall(direction = Math.random() < 0.5 ? -1 : 1) {
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      const angle = (Math.random() * 1.2) - 0.6;
+      ball.speed = 5;
+      ball.dx = direction * ball.speed;
+      ball.dy = angle * ball.speed;
+    }
+
+    function updatePlayer() {
+      if (keys['ArrowUp'] || keys['w']) {
+        player.y -= player.speed;
+      }
+      if (keys['ArrowDown'] || keys['s']) {
+        player.y += player.speed;
+      }
+      clampPlayer();
+    }
+
+    function updateComputer() {
+      const targetY = ball.y - computer.height / 2;
+      const delta = targetY - computer.y;
+
+      if (Math.abs(delta) > 10) {
+        computer.y += Math.sign(delta) * computer.speed;
+      }
+
+      if (computer.y < 0) computer.y = 0;
+      if (computer.y + computer.height > canvas.height) {
+        computer.y = canvas.height - computer.height;
+      }
+    }
+
+    function handleWallCollision() {
+      if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= canvas.height) {
+        ball.dy *= -1;
+      }
+    }
+
+    function collides(a, b) {
+      return (
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y
+      );
+    }
+
+    function handlePaddleCollision() {
+      const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
+      const computerRect = { x: computer.x, y: computer.y, width: computer.width, height: computer.height };
+      const ballRect = { x: ball.x - ball.radius, y: ball.y - ball.radius, width: ball.radius * 2, height: ball.radius * 2 };
+
+      if (collides(playerRect, ballRect) && ball.dx < 0) {
+        ball.x = player.x + player.width + ball.radius;
+        ball.dx = Math.abs(ball.dx) + 0.3;
+        const impact = (ball.y - (player.y + player.height / 2)) / (player.height / 2);
+        ball.dy = impact * 5;
+      }
+
+      if (collides(computerRect, ballRect) && ball.dx > 0) {
+        ball.x = computer.x - ball.radius;
+        ball.dx = -(Math.abs(ball.dx) + 0.3);
+        const impact = (ball.y - (computer.y + computer.height / 2)) / (computer.height / 2);
+        ball.dy = impact * 5;
+      }
+    }
+
+    function updateScore() {
+      playerScoreEl.textContent = playerScore;
+      computerScoreEl.textContent = computerScore;
+    }
+
+    function checkScoring() {
+      if (ball.x + ball.radius < 0) {
+        computerScore += 1;
+        updateScore();
+        resetBall(1);
+      }
+
+      if (ball.x - ball.radius > canvas.width) {
+        playerScore += 1;
+        updateScore();
+        resetBall(-1);
+      }
+    }
+
+    function updateBall() {
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      handleWallCollision();
+      handlePaddleCollision();
+      checkScoring();
+    }
+
+    function drawBackground() {
+      ctx.fillStyle = '#020b14';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.setLineDash([12, 12]);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function drawPaddle(x, y, width, height, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, width, height);
+    }
+
+    function drawBall() {
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function draw() {
+      drawBackground();
+      drawPaddle(player.x, player.y, player.width, player.height, '#60a5fa');
+      drawPaddle(computer.x, computer.y, computer.width, computer.height, '#f97316');
+      drawBall();
+    }
+
+    function gameLoop() {
+      updatePlayer();
+      updateComputer();
+      updateBall();
+      draw();
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function resetGame() {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      playerScore = 0;
+      computerScore = 0;
+      updateScore();
+      player.y = canvas.height / 2 - paddleHeight / 2;
+      computer.y = canvas.height / 2 - paddleHeight / 2;
+      resetBall();
+      gameLoop();
+    }
+
+    updateScore();
+    resetBall();
+    gameLoop();
+  </script>
 </body>
 </html>
-```
