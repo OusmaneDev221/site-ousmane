@@ -1,0 +1,29 @@
+
+# 🚗 Jeu de voiture Python
+
+Un petit jeu de voiture en 2D créé avec Python et Pygame.
+
+## Installation
+
+Installe Python, puis exécute :
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+## Lancer le jeu
+
+```bash
+python voiture.py
+```
+
+## Commandes
+
+- Flèche gauche : aller à gauche
+- Flèche droite : aller à droite
+- Flèche haut : avancer
+- Flèche bas : reculer
+- R : recommencer après une collision
+- Échap : quitter le jeu
+
+Amuse-toi bien !
